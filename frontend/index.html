@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voice AI Assistant - Bajaj Auto Finance</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #667eea;
+            margin-bottom: 30px;
+        }
+
+        .status {
+            text-align: center;
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 10px;
+            background: #f8f9fa;
+        }
+
+        .status.disconnected { background: #f8d7da; color: #721c24; }
+        .status.connecting { background: #fff3cd; color: #856404; }
+        .status.connected { background: #d4edda; color: #155724; }
+
+        .controls {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+
+        button {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-width: 140px;
+        }
+
+        .btn-connect {
+            background: #28a745;
+            color: white;
+        }
+
+        .btn-disconnect {
+            background: #dc3545;
+            color: white;
+        }
+
+        .btn-mute {
+            background: #6c757d;
+            color: white;
+        }
+
+        button:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .participants {
+            margin: 20px 0;
+        }
+
+        .participant {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 10px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logs {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 15px;
+            height: 200px;
+            overflow-y: auto;
+            font-family: monospace;
+            font-size: 13px;
+            margin-top: 20px;
+        }
+
+        .log-entry {
+            margin: 5px 0;
+            word-wrap: break-word;
+        }
+
+        .log-info { color: #0056b3; }
+        .log-error { color: #dc3545; }
+        .log-success { color: #28a745; }
+
+        #remoteAudio {
+            width: 100%;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎙️ Voice AI Assistant</h1>
+        <p style="text-align: center; color: #666; margin-bottom: 30px;">Bajaj Auto Finance - Debt Collection System</p>
+
+        <div id="status" class="status disconnected">
+            <strong>Status:</strong> <span id="statusText">Disconnected</span>
+        </div>
+
+        <div class="controls">
+            <button id="connectBtn" class="btn-connect">📞 Start Call</button>
+            <button id="disconnectBtn" class="btn-disconnect" disabled>📵 End Call</button>
+            <button id="muteBtn" class="btn-mute" disabled>🎤 Mute</button>
+        </div>
+
+        <div class="participants">
+            <h3>Participants</h3>
+            <div id="participantsList">
+                <div class="participant">
+                    <span>You</span>
+                    <span id="localStatus">Not connected</span>
+                </div>
+            </div>
+        </div>
+
+        <audio id="remoteAudio" controls style="display: none;"></audio>
+
+        <div class="logs">
+            <div id="logContainer">
+                <div class="log-entry log-info">Ready to connect...</div>
+            </div>
+        </div>
+
+        <div style="text-align: center; margin-top: 20px;">
+            <button onclick="clearLogs()" style="background: #007bff; color: white; padding: 8px 16px; border-radius: 15px;">Clear Logs</button>
+        </div>
+    </div>
+
+    <!-- LiveKit SDK -->
+    <script src="livekit-client.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
